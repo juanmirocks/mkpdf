@@ -14,21 +14,29 @@ function changeExtension(filePath, extensionWithDot) {
   return filePath.substr(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
 
+// Create a browser instance
+async function launchPuppeteerBrowser() {
+  return puppeteer.launch({
+    headless: true
+  });
+}
+
+// Close the browser instance
+async function closePuppeteerBrowser(puppeteerBrowser) {
+  return puppeteerBrowser.close();
+}
+
 // Code improved from:
 // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
 // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
-async function saveAsPdf(inputHtmlFilepath, inputCssFilepathOpt) {
-  const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
+async function saveAsPdf(puppeteerBrowser, inputHtmlFilepath, inputCssFilepathOpt) {
+  // console.group(JSON.stringify(puppeteerBrowser, null, 4) + " " + typeof(puppeteerBrowser));
 
+  const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing ${outputPdfFilepath} ... `);
 
-  // Create a browser instance
-  const browser = await puppeteer.launch({
-    headless: true
-  });
-
   // Create a new page
-  const page = await browser.newPage();
+  const page = await puppeteerBrowser.newPage();
 
   // Get HTML content from HTML file
   const html = fs.readFileSync(inputHtmlFilepath, 'utf-8');
@@ -53,16 +61,17 @@ async function saveAsPdf(inputHtmlFilepath, inputCssFilepathOpt) {
     format: 'A4',
   });
 
-  process.stderr.write(`DONE\n`);
+  await page;
 
-  // Close the browser instance
-  await browser.close();
+  process.stderr.write(`DONE\n`);
 };
 
 // ----------------------------------------------------------------------------
 
 module.exports = {
-  saveAsPdf
+  saveAsPdf,
+  launchPuppeteerBrowser,
+  closePuppeteerBrowser
 }
 
 // ----------------------------------------------------------------------------
@@ -76,5 +85,11 @@ if (require.main === module) {
   const inputHtmlFilepath = process.argv[2];
   const inputCssFilepathOpt = process.argv[3];
 
-  saveAsPdf(inputHtmlFilepath, inputCssFilepathOpt);
+  (async () => {
+    const puppeteerBrowser = await launchPuppeteerBrowser();
+
+    await saveAsPdf(puppeteerBrowser, inputHtmlFilepath, inputCssFilepathOpt);
+
+    await closePuppeteerBrowser(puppeteerBrowser);
+  })();
 }
