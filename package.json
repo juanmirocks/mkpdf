@@ -1,0 +1,20 @@
+{
+  "name": "parcel-reporter-mkpdf",
+  "version": "1.0.0-wip",
+  "description": "Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
+  "private": true,
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "parcel": "2.x"
+  },
+  "dependencies": {
+    "puppeteer": "18.1.x"
+  },
+  "peerDependencies": {
+    "@parcel/plugin": "^2.8.3"
+  }
+}
