@@ -77,7 +77,8 @@ module.exports = {
 
 // ----------------------------------------------------------------------------
 
-if (require.main === module) {
+//Check if it's run from the command line, being either a CommonJS or an ES module
+if (require.main === module || (require.main === undefined && process.argv[1])) {
   if (process.argv.length === 2) {
     process.stderr.write('Input arguments must be: inputHtmlFilepath [inputCssFilepath]');
     process.exit(1);
