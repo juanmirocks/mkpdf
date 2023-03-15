@@ -1,6 +1,5 @@
 import puppeteer from "puppeteer";
-// const puppeteer = require('puppeteer');
-const fs = require('fs');
+import fs from 'fs';
 
 // ----------------------------------------------------------------------------
 
@@ -14,21 +13,21 @@ function changeExtension(filePath: string, extensionWithDot: string): string {
 }
 
 // Create a browser instance
-async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
+export async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
   return puppeteer.launch({
     headless: true
   });
 }
 
 // Close the browser instance
-async function closePuppeteerBrowser(puppeteerBrowser: puppeteer.Browser): Promise<void> {
+export async function closePuppeteerBrowser(puppeteerBrowser: puppeteer.Browser): Promise<void> {
   return puppeteerBrowser.close();
 }
 
 // Code improved from:
 // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
 // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
-async function saveAsPdf(puppeteerBrowser: puppeteer.Browser, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
+export async function saveAsPdf(puppeteerBrowser: puppeteer.Browser, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
   // console.group(JSON.stringify(puppeteerBrowser, null, 4) + " " + typeof(puppeteerBrowser));
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
@@ -64,14 +63,6 @@ async function saveAsPdf(puppeteerBrowser: puppeteer.Browser, inputHtmlFilepath:
 
   process.stderr.write(`DONE\n`);
 };
-
-// ----------------------------------------------------------------------------
-
-module.exports = {
-  saveAsPdf,
-  launchPuppeteerBrowser,
-  closePuppeteerBrowser
-}
 
 // ----------------------------------------------------------------------------
 
