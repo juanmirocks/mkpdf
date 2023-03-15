@@ -1,7 +1,7 @@
 "use strict";
 
 const { Reporter } = require('@parcel/plugin');
-const { saveAsPdf } = require('./mkpdf.ts');
+const { saveAsPdf } = require('./mkpdf');
 
 function getBundleByType(bundles, type) {
   return bundles.find(elem => elem.type == type);
