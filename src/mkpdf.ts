@@ -10,8 +10,8 @@ const fs = require('fs');
 // IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
 //
 // `extensionWithDot` must include the dot, for example '.html'
-function changeExtension(filePath, extensionWithDot) {
-  return filePath.substr(0, filePath.lastIndexOf(".")) + extensionWithDot;
+function changeExtension(filePath: string, extensionWithDot: string): string {
+  return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
 
 // Create a browser instance
