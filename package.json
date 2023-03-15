@@ -3,9 +3,17 @@
   "version": "1.0.0-wip",
   "description": "Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
   "private": true,
-  "main": "index.js",
   "type": "commonjs",
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "targets": {
+    "main": {
+      "optimize": true
+    }
+  },
   "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -16,5 +24,8 @@
   },
   "peerDependencies": {
     "@parcel/plugin": "^2.8.3"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.3"
   }
 }
