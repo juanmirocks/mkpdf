@@ -1,5 +1,3 @@
-"use strict";
-
 const { Reporter } = require('@parcel/plugin');
 import parcelTypes from '@parcel/types';
 const { saveAsPdf } = require('./mkpdf');
