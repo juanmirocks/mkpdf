@@ -61,7 +61,7 @@ async function saveAsPdf(puppeteerBrowser, inputHtmlFilepath, inputCssFilepathOp
     format: 'A4',
   });
 
-  await page;
+  await page.close();
 
   process.stderr.write(`DONE\n`);
 };
