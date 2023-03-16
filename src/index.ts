@@ -26,19 +26,19 @@ async function closeResources() {
 }
 
 module.exports = new Reporter({
-  async report({ event }: { event: parcelTypes.ReporterEvent }) {
+  async report({ event, logger }: { event: parcelTypes.ReporterEvent, logger: parcelTypes.PluginLogger }) {
     if (event.type === "buildSuccess") {
       const bundles: parcelTypes.PackagedBundle[] = event.bundleGraph.getBundles();
       const htmlInput = getBundleFilePathByType(bundles, "html");
       const cssInputOpt = getBundleFilePathByType(bundles, "css");
 
-      process.stdout.write(`Built ${bundles.length} bundles:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n`);
+      logger.info({ message: `Built:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n` });
 
       if (htmlInput) {
         await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput, cssInputOpt);
       }
       else {
-        process.stderr.write("❌ No built html");
+        logger.error({ message: "❌ No built html" });
       }
     }
 
