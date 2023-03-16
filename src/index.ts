@@ -1,6 +1,6 @@
-const { Reporter } = require('@parcel/plugin');
+import { Reporter } from '@parcel/plugin';
 import parcelTypes from '@parcel/types';
-const { saveAsPdf } = require('./mkpdf');
+import * as mkpdf from './mkpdf';
 
 function getBundleByType(bundles: parcelTypes.PackagedBundle[], type: string): parcelTypes.PackagedBundle | undefined {
   return bundles.find(elem => elem.type == type);
