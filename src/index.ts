@@ -25,7 +25,7 @@ module.exports = new Reporter({
       process.stdout.write(`Built ${bundles.length} bundles:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n`);
 
       if (htmlInput) {
-        await mkpdf.saveAsPdf(puppeteerBrowserPromise, htmlInput, cssInputOpt);
+        await mkpdf.printAsPdfWithBrowser(puppeteerBrowserPromise, htmlInput, cssInputOpt);
       }
       else {
         process.stderr.write("❌ No built html");
