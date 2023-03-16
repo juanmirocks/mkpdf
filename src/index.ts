@@ -26,24 +26,30 @@ async function closeResources(logger: parcelTypes.PluginLogger) {
 }
 
 module.exports = new Reporter({
-  async report({ event, logger }: { event: parcelTypes.ReporterEvent, logger: parcelTypes.PluginLogger }) {
-    if (event.type === "buildSuccess") {
-      const bundles: parcelTypes.PackagedBundle[] = event.bundleGraph.getBundles();
+  async report(opts) {
+    if (opts.event.type === "buildSuccess") {
+      const bundles: parcelTypes.PackagedBundle[] = opts.event.bundleGraph.getBundles();
       const htmlInput = getBundleFilePathByType(bundles, "html");
       const cssInputOpt = getBundleFilePathByType(bundles, "css");
 
-      logger.info({ message: `Built:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n` });
+      opts.logger.info({ message: `Built:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n` });
 
       if (htmlInput) {
         await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput, cssInputOpt);
       }
       else {
-        logger.error({ message: "❌ No built html" });
+        opts.logger.error({ message: "❌ No built html" });
       }
     }
 
-    else if (event.type === "watchEnd") {
-      await closeResources(logger);
+    const isBuildingEnded =
+      //In serve/watch mode, a `watchEnd` event is emitted at the end: https://parceljs.org/plugin-system/reporter/#watcher-events
+      (opts.event.type === "watchEnd") ||
+      //In build mode there is no final event, so we check for the following options to know if the building finished completely
+      ((opts.event.type === "buildSuccess" || opts.event.type === "buildFailure") && ((opts.options.serveOptions === false) || (opts.options.mode === "production")))
+
+    if (isBuildingEnded) {
+      await closeResources(opts.logger);
     }
   }
 });
