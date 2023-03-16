@@ -24,6 +24,14 @@ export async function closePuppeteerBrowser(puppeteerBrowserPromise: Promise<pup
   return puppeteerBrowserPromise.then(x => x.close());
 }
 
+export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+  const browserPromise = launchPuppeteerBrowser()
+
+  return printAsPdfWithBrowser(browserPromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => {
+    closePuppeteerBrowser(browserPromise);
+  });
+};
+
 export async function printAsPdfWithBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   return puppeteerBrowserPromise.then(async browser => {
     const pagePromise = browser.newPage();
