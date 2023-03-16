@@ -22,8 +22,8 @@ export async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
 }
 
 /** Close the browser instance */
-export async function closePuppeteerBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>): Promise<void> {
-  return puppeteerBrowserPromise.then(x => x.close());
+export async function closePuppeteerBrowser(browserPromise: Promise<puppeteer.Browser>): Promise<void> {
+  return browserPromise.then(x => x.close());
 }
 
 export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
@@ -34,8 +34,8 @@ export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt:
   });
 };
 
-export async function printAsPdfWithBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
-  return puppeteerBrowserPromise.then(async browser => {
+export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+  return browserPromise.then(async browser => {
     const pagePromise = browser.newPage();
 
     return printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => {
