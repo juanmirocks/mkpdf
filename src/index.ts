@@ -1,6 +1,6 @@
-import { Reporter } from '@parcel/plugin';
-import parcelTypes from '@parcel/types';
-import * as mkpdf from './mkpdf';
+import { Reporter } from "@parcel/plugin";
+import parcelTypes from "@parcel/types";
+import * as mkpdf from "./mkpdf";
 
 function getBundleByType(bundles: parcelTypes.PackagedBundle[], type: string): parcelTypes.PackagedBundle | undefined {
   return bundles.find(elem => elem.type == type);
@@ -19,15 +19,15 @@ const PUPPETEER_BROWSER_PAGE_PROMISE = (async () => {
 })();
 
 async function closeResources() {
-  process.stdout.write(`Parcel watching ended. Liberating resources... `);
+  process.stdout.write("Parcel watching ended. Liberating resources... ");
   (await PUPPETEER_BROWSER_PAGE_PROMISE).close();
   await mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE);
-  process.stdout.write(`DONE`);
+  process.stdout.write("DONE");
 }
 
 module.exports = new Reporter({
   async report({ event }: { event: parcelTypes.ReporterEvent }) {
-    if (event.type === 'buildSuccess') {
+    if (event.type === "buildSuccess") {
       const bundles: parcelTypes.PackagedBundle[] = event.bundleGraph.getBundles();
       const htmlInput = getBundleFilePathByType(bundles, "html");
       const cssInputOpt = getBundleFilePathByType(bundles, "css");
@@ -42,7 +42,7 @@ module.exports = new Reporter({
       }
     }
 
-    else if (event.type === 'watchEnd') {
+    else if (event.type === "watchEnd") {
       await closeResources();
     }
   }
