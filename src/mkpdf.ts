@@ -24,19 +24,25 @@ export async function closePuppeteerBrowser(puppeteerBrowserPromise: Promise<pup
   return puppeteerBrowserPromise.then(x => x.close());
 }
 
-// Code improved from:
-// * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
-// * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
-export async function saveAsPdf(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
-  const puppeteerBrowser = await puppeteerBrowserPromise;
+export async function printAsPdfWithBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
+  puppeteerBrowserPromise.then(browser => {
+    const pagePromise = browser.newPage();
+
+    printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => pagePromise.then(page => page.close()));
+  });
+};
+
+export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
+  // Code references:
+  // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
+  // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing ${outputPdfFilepath} ... `);
 
-  // Create a new page
-  const page = await puppeteerBrowser.newPage();
+  const page = await pagePromise;
 
-  // Get HTML content from HTML file
+  // Get HTML content from HTML file and set the browser page's with it
   const html = fs.readFileSync(inputHtmlFilepath, 'utf-8');
   await page.setContent(html, {
     // See options: https://pptr.dev/api/puppeteer.page.setcontent
@@ -44,7 +50,7 @@ export async function saveAsPdf(puppeteerBrowserPromise: Promise<puppeteer.Brows
     waitUntil: 'networkidle0'
   });
 
-  // "Force" css style (without this, my css doesn't get applied)
+  // "Force" css style (without this, my css didn't get applied)
   if (inputCssFilepathOpt) {
     await page.addStyleTag({ path: inputCssFilepathOpt });
     // Wait for all fonts to be ready
@@ -58,8 +64,6 @@ export async function saveAsPdf(puppeteerBrowserPromise: Promise<puppeteer.Brows
     printBackground: true,
     format: 'A4',
   });
-
-  await page.close();
 
   process.stderr.write(`DONE\n`);
 };
