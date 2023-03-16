@@ -8,7 +8,8 @@ import fs from "fs";
  *
  * IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
  *
- * `extensionWithDot` must include the dot, for example '.html'
+ * @param filePath simple, relative, or full path
+ * @param extensionWithDot extension to replace with; it must include the dot, for example '.html'
  */
 function changeExtension(filePath: string, extensionWithDot: string): string {
   return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
@@ -54,7 +55,7 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
  * @param pagePromise a puppeteer's already created page to benefit from its cache.
  * @param inputHtmlFilepath HTML file full path
  * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
- * @returns {Promise<string>} the eventual path of the saved PDF.
+ * @returns the eventual path of the saved PDF.
  */
 export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   // Code references:
