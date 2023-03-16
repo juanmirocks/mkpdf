@@ -44,10 +44,23 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
   });
 };
 
+/**
+ * Generate (print) PDF out of an input HTML file.
+ *
+ * Use this method to reuse an already created browser page to benefit from its cache.
+ * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
+ * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
+ *
+ * @param pagePromise a puppeteer's already created page to benefit from its cache.
+ * @param inputHtmlFilepath HTML file full path
+ * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
+ * @returns {Promise<string>} the eventual path of the saved PDF.
+ */
 export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   // Code references:
   // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
   // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
+  console.time("printAsPdfWithBrowserPage");
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing ${outputPdfFilepath} ... `);
@@ -78,6 +91,7 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
   });
 
   process.stderr.write("DONE\n");
+  console.timeEnd("printAsPdfWithBrowserPage");
 
   return outputPdfFilepath;
 };
