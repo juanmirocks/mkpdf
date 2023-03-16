@@ -18,11 +18,11 @@ const PUPPETEER_BROWSER_PAGE_PROMISE = (async () => {
   return await PUPPETEER_BROWSER_PROMISE.then(browser => browser.newPage());
 })();
 
-async function closeResources() {
-  process.stdout.write("Parcel watching ended. Liberating resources... ");
+async function closeResources(logger: parcelTypes.PluginLogger) {
+  logger.verbose({ message: "Parcel watching ended. Liberating resources... " });
   (await PUPPETEER_BROWSER_PAGE_PROMISE).close();
   await mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE);
-  process.stdout.write("DONE");
+  logger.verbose({ message: "DONE" });
 }
 
 module.exports = new Reporter({
@@ -43,7 +43,7 @@ module.exports = new Reporter({
     }
 
     else if (event.type === "watchEnd") {
-      await closeResources();
+      await closeResources(logger);
     }
   }
 });
