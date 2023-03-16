@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import fs from 'fs';
+import fs from "fs";
 
 // ----------------------------------------------------------------------------
 
@@ -55,18 +55,18 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
   const page = await pagePromise;
 
   // Get HTML content from HTML file and set the browser page's with it
-  const html = fs.readFileSync(inputHtmlFilepath, 'utf-8');
+  const html = fs.readFileSync(inputHtmlFilepath, "utf-8");
   await page.setContent(html, {
     // See options: https://pptr.dev/api/puppeteer.page.setcontent
     // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
-    waitUntil: 'networkidle0'
+    waitUntil: "networkidle0"
   });
 
   // "Force" css style (without this, my css didn't get applied)
   if (inputCssFilepathOpt) {
     await page.addStyleTag({ path: inputCssFilepathOpt });
     // Wait for all fonts to be ready
-    await page.evaluateHandle('document.fonts.ready');
+    await page.evaluateHandle("document.fonts.ready");
   }
 
   // Download the PDF; see all options: https://pptr.dev/api/puppeteer.pdfoptions
@@ -74,10 +74,10 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
     path: `${outputPdfFilepath}`,
     // margin: { top: '0px', right: '0px', bottom: '0px', left: '0px' },
     printBackground: true,
-    format: 'A4',
+    format: "A4",
   });
 
-  process.stderr.write(`DONE\n`);
+  process.stderr.write("DONE\n");
 
   return outputPdfFilepath;
 };
