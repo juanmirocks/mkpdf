@@ -15,8 +15,8 @@ function changeExtension(filePath: string, extensionWithDot: string): string {
   return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
 
-function calcElapsedTimeInSeconds(startTime: number): number {
-  return Math.round(((performance.now() - startTime) + Number.EPSILON));
+function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
+  return Math.round(((performance.now() - startTimeInMs) + Number.EPSILON));
 }
 
 /** Create a browser instance */
@@ -66,7 +66,7 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
   // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
   // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
 
-  const startTime = performance.now();
+  const startTimeInMs = performance.now();
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing PDF into: ${outputPdfFilepath} ... \n`);
@@ -96,7 +96,7 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
     format: "A4",
   });
 
-  process.stderr.write(`Finished printing in: ${calcElapsedTimeInSeconds(startTime)}ms; file: ${outputPdfFilepath}\n`);
+  process.stderr.write(`Finished printing in: ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${outputPdfFilepath}\n`);
 
   return outputPdfFilepath;
 };
