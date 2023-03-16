@@ -10,10 +10,20 @@ function getBundleFilePathByType(bundles: parcelTypes.PackagedBundle[], type: st
   return getBundleByType(bundles, type)?.filePath;
 }
 
-const puppeteerBrowserPromise = (async () => {
-  const ret = await mkpdf.launchPuppeteerBrowser();
-  return ret;
+const PUPPETEER_BROWSER_PROMISE = (async () => {
+  return await mkpdf.launchPuppeteerBrowser();
 })();
+
+const PUPPETEER_BROWSER_PAGE_PROMISE = (async () => {
+  return await PUPPETEER_BROWSER_PROMISE.then(browser => browser.newPage());
+})();
+
+async function closeResources() {
+  process.stdout.write(`Parcel watching ended. Liberating resources... `);
+  (await PUPPETEER_BROWSER_PAGE_PROMISE).close();
+  await mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE);
+  process.stdout.write(`DONE`);
+}
 
 module.exports = new Reporter({
   async report({ event }: { event: parcelTypes.ReporterEvent }) {
@@ -25,7 +35,7 @@ module.exports = new Reporter({
       process.stdout.write(`Built ${bundles.length} bundles:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n`);
 
       if (htmlInput) {
-        await mkpdf.printAsPdfWithBrowser(puppeteerBrowserPromise, htmlInput, cssInputOpt);
+        await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput, cssInputOpt);
       }
       else {
         process.stderr.write("❌ No built html");
@@ -33,9 +43,7 @@ module.exports = new Reporter({
     }
 
     else if (event.type === 'watchEnd') {
-      process.stdout.write(`Parcel watching ended. Liberating resources... `);
-      mkpdf.closePuppeteerBrowser(puppeteerBrowserPromise);
-      process.stdout.write(`DONE`);
+      await closeResources();
     }
   }
 });
