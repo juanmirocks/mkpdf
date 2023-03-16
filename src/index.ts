@@ -20,7 +20,7 @@ const PUPPETEER_BROWSER_PAGE_PROMISE = (async () => {
 
 async function closeResources(logger: parcelTypes.PluginLogger) {
   logger.verbose({ message: "Parcel watching ended. Liberating resources... " });
-  (await PUPPETEER_BROWSER_PAGE_PROMISE).close();
+  // (await PUPPETEER_BROWSER_PAGE_PROMISE).close(); it suffices closing the browser
   await mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE);
   logger.verbose({ message: "DONE" });
 }
