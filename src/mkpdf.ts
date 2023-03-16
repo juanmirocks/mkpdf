@@ -3,11 +3,13 @@ import fs from 'fs';
 
 // ----------------------------------------------------------------------------
 
-// Change `filePath`'s extension.
-//
-// IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
-//
-// `extensionWithDot` must include the dot, for example '.html'
+/**
+ * Change `filePath`'s extension.
+ *
+ * IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
+ *
+ * `extensionWithDot` must include the dot, for example '.html'
+ */
 function changeExtension(filePath: string, extensionWithDot: string): string {
   return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
