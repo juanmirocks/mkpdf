@@ -24,15 +24,17 @@ export async function closePuppeteerBrowser(puppeteerBrowserPromise: Promise<pup
   return puppeteerBrowserPromise.then(x => x.close());
 }
 
-export async function printAsPdfWithBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
-  puppeteerBrowserPromise.then(browser => {
+export async function printAsPdfWithBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+  return puppeteerBrowserPromise.then(async browser => {
     const pagePromise = browser.newPage();
 
-    printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => pagePromise.then(page => page.close()));
+    return printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => {
+      pagePromise.then(page => page.close())
+    });
   });
 };
 
-export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined) {
+export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   // Code references:
   // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
   // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
@@ -66,5 +68,7 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
   });
 
   process.stderr.write(`DONE\n`);
+
+  return outputPdfFilepath;
 };
 
