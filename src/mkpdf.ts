@@ -12,16 +12,16 @@ function changeExtension(filePath: string, extensionWithDot: string): string {
   return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
 
-// Create a browser instance
+/** Create a browser instance */
 export async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
   return puppeteer.launch({
     headless: true
   });
 }
 
-// Close the browser instance
+/** Close the browser instance */
 export async function closePuppeteerBrowser(puppeteerBrowserPromise: Promise<puppeteer.Browser>): Promise<void> {
-  return puppeteerBrowserPromise.then((x) => x.close());
+  return puppeteerBrowserPromise.then(x => x.close());
 }
 
 // Code improved from:
