@@ -64,23 +64,3 @@ export async function saveAsPdf(puppeteerBrowser: puppeteer.Browser, inputHtmlFi
   process.stderr.write(`DONE\n`);
 };
 
-// ----------------------------------------------------------------------------
-
-//Check if it's run from the command line, being either a CommonJS or an ES module
-if (require.main === module || (require.main === undefined && process.argv[1])) {
-  if (process.argv.length === 2) {
-    process.stderr.write('Input arguments must be: inputHtmlFilepath [inputCssFilepath]');
-    process.exit(1);
-  }
-
-  const inputHtmlFilepath = process.argv[2];
-  const inputCssFilepathOpt = process.argv[3];
-
-  (async () => {
-    const puppeteerBrowser = await launchPuppeteerBrowser();
-
-    await saveAsPdf(puppeteerBrowser, inputHtmlFilepath, inputCssFilepathOpt);
-
-    await closePuppeteerBrowser(puppeteerBrowser);
-  })();
-}
