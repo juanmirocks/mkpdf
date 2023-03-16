@@ -84,7 +84,7 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
 
   // Download the PDF; see all options: https://pptr.dev/api/puppeteer.pdfoptions
   await page.pdf({
-    path: `${outputPdfFilepath}`,
+    path: outputPdfFilepath,
     // margin: { top: '0px', right: '0px', bottom: '0px', left: '0px' },
     printBackground: true,
     format: "A4",
