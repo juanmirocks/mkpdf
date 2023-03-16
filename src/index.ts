@@ -2,6 +2,8 @@ import { Reporter } from "@parcel/plugin";
 import parcelTypes from "@parcel/types";
 import * as mkpdf from "./mkpdf";
 
+// ----------------------------------------------------------------------------
+
 function getBundleByType(bundles: parcelTypes.PackagedBundle[], type: string): parcelTypes.PackagedBundle | undefined {
   return bundles.find(elem => elem.type == type);
 }
@@ -24,6 +26,8 @@ async function closeResources(logger: parcelTypes.PluginLogger) {
   await mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE);
   logger.verbose({ message: "DONE" });
 }
+
+// ----------------------------------------------------------------------------
 
 export default new Reporter({
   async report(opts) {
