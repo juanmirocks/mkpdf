@@ -25,7 +25,7 @@ async function closeResources(logger: parcelTypes.PluginLogger) {
   logger.verbose({ message: "DONE" });
 }
 
-module.exports = new Reporter({
+export default new Reporter({
   async report(opts) {
     if (opts.event.type === "buildSuccess") {
       const bundles: parcelTypes.PackagedBundle[] = opts.event.bundleGraph.getBundles();
