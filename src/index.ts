@@ -1,6 +1,6 @@
 import { Reporter } from "@parcel/plugin";
 import parcelTypes from "@parcel/types";
-import * as mkpdf from "./mkpdf";
+import * as mkpdf from "../workspaces/mkpdf/src/mkpdf";
 
 // ----------------------------------------------------------------------------
 
