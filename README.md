@@ -1,3 +1,4 @@
+[![npm version](https://badge.fury.io/js/parcel-reporter-mkpdf.svg)](https://badge.fury.io/js/parcel-reporter-mkpdf)
 # parcel-reporter-mkpdf
 
 📦 Plugin for [Parcel](https://parceljs.org) web build tool:
@@ -10,6 +11,21 @@ Key features:
 * 💫 Quick, **iterative** development: your PDF is generated every time `parcel` finishes an HTML built.
 * 💅 Your CSS/Less/Sass **style** will also be applied.
 * 🚀 The "printing" of the PDFs is **fast** thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
+
+
+## Install package
+
+Using `npm`:
+
+```shell
+npm install parcel-reporter-mkpdf --save-dev
+```
+
+Analogously, using `yarn`:
+
+```shell
+yarn add parcel-reporter-mkpdf --dev
+```
 
 
 ## How to use
@@ -31,6 +47,8 @@ As an alternative, use the `--reporter` option in parcel's [CLI](https://parcelj
 ```shell
 npx parcel serve --reporter parcel-reporter-mkpdf
 ```
+
+That's all! From then on, each time parcel builds an HTML (e.g., `dist/someFilename.html`), the PDF will be generated in the same folder and filename but with changed file extension (i.e., `dist/someFilename.pdf`).
 
 
 ## Coding
