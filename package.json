@@ -4,6 +4,10 @@
   "description": "📦🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanmirocks/parcel-reporter-mkpdf.git"
+  },
   "private": true,
   "type": "commonjs",
   "source": "src/index.ts",
