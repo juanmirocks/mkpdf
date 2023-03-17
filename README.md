@@ -1,15 +1,15 @@
 # parcel-reporter-mkpdf
 
-Plugin for [Parcel](https://parceljs.org) web build tool:
+📦 Plugin for [Parcel](https://parceljs.org) web build tool:
 
-Each time parcel builds an HTML (either in serve/watch or production mode), this plugin will save it as a PDF.
+Each time `parcel` builds an HTML (either in serve/watch or production mode), this plugin will save it as a PDF.
 The exported PDF will look the same as if you had used the `Print` functionality from Chrome.
 
 Key features:
 
-* Quick & iterative development: your PDF is generated as soon as and each time parcel finishes a HTML built, also in watch mode.
-* Your CSS/LESS/SASS style will also be applied.
-* The "printing" of the PDFs is very fast thanks to internal caching. For example, if your HTML links external files, such as .js or .css, these will be fetched only once.
+* ✨ Quick & iterative development: your PDF is generated every time `parcel` finishes an HTML built.
+* 💅 Your CSS/Less/Sass style will also be applied.
+* 🚀 The "printing" of the PDFs is fast thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
 
 
 ## How to use
