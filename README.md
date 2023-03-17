@@ -7,7 +7,7 @@ The browser is controlled with Google's [puppeteer](https://github.com/puppeteer
 
 ## How to use
 
-To hook this plugin to parcel's builds, add something like the following to your `.parcelrc`(https://parceljs.org/features/plugins/#.parcelrc) configuration:
+To hook this plugin to parcel's builds, add this plugin name to the field `reporters` in your `.parcelrc`(https://parceljs.org/features/plugins/#.parcelrc) configuration; example:
 
 ```json
 {
