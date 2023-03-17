@@ -1,0 +1,22 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": [
+    "src/**/*",
+    "workspaces/*/src/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "composite": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "noEmitOnError": true,
+    "declaration": true,
+    "declarationMap": true
+  }
+}

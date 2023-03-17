@@ -1,20 +1,52 @@
 {
   "name": "parcel-reporter-mkpdf",
-  "version": "1.0.0-wip",
-  "description": "Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
-  "private": true,
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "📦🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
+  "keywords": [
+    "plugin",
+    "pdf",
+    "parcel",
+    "pdf-generation",
+    "puppeteer",
+    "pdf-print"
+  ],
+  "author": "Dr. Juan Miguel Cejuela",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanmirocks/parcel-reporter-mkpdf.git"
+  },
+  "private": false,
   "type": "commonjs",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "targets": {
+    "main": {
+      "optimize": false
+    }
+  },
   "scripts": {
+    "clean": "rm  dist/* 2> /dev/null || true",
+    "watch": "parcel watch",
+    "build": "npm run clean; parcel build",
+    "check": "tsc --noEmit",
+    "check-watch": "npm run check -- -watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "parcel": "2.x"
   },
-  "dependencies": {
-    "puppeteer": "18.1.x"
-  },
   "peerDependencies": {
-    "@parcel/plugin": "^2.8.3"
-  }
+    "@parcel/plugin": "^2.8.3",
+    "@parcel/types": "^2.8.3"
+  },
+  "devDependencies": {
+    "@parcel/transformer-typescript-tsc": "^2.8.3",
+    "@tsconfig/recommended": "^1.0.2",
+    "parcel": "^2.8.3",
+    "typescript": "^4.9.5"
+  },
+  "workspaces": [
+    "workspaces/*"
+  ]
 }
