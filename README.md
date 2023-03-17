@@ -26,3 +26,9 @@ As an alternative, use the `--reporter` option in parcel's [CLI](https://parcelj
 ```shell
 npx parcel serve --reporter parcel-reporter-mkpdf
 ```
+
+
+## Coding
+
+* The key functionality using `puppeteer` is in [mkpdf.ts](./workspaces/mkpdf/src/mkpdf.ts#L67).
+* The parcel plugin wrapper code is in [index.ts](./src/index.ts#L35).
