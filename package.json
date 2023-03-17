@@ -1,7 +1,7 @@
 {
   "name": "parcel-reporter-mkpdf",
   "version": "1.0.0-wip",
-  "description": "🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
+  "description": "📦🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
   "private": true,
