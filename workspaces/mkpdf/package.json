@@ -3,6 +3,7 @@
   "version": "1.0.0-wip",
   "description": "",
   "author": "Dr. Juan Miguel Cejuela",
+  "license": "Apache-2.0",
   "source": "src/mkpdf.ts",
   "main": "dist/mkpdf.js",
   "scripts": {
