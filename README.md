@@ -7,9 +7,9 @@ The exported PDF will look the same as if you had used the `Print` functionality
 
 Key features:
 
-* ✨ Quick & iterative development: your PDF is generated every time `parcel` finishes an HTML built.
-* 💅 Your CSS/Less/Sass style will also be applied.
-* 🚀 The "printing" of the PDFs is fast thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
+* 💫 Quick, **iterative** development: your PDF is generated every time `parcel` finishes an HTML built.
+* 💅 Your CSS/Less/Sass **style** will also be applied.
+* 🚀 The "printing" of the PDFs is **fast** thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
 
 
 ## How to use
