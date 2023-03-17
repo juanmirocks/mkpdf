@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/juanmirocks/parcel-reporter-mkpdf.git"
   },
-  "private": true,
+  "private": false,
   "type": "commonjs",
   "source": "src/index.ts",
   "main": "dist/index.js",
