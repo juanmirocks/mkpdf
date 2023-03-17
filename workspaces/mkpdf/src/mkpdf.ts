@@ -62,10 +62,6 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
  * @returns the eventual path of the saved PDF.
  */
 export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
-  // Code references:
-  // * https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/
-  // * https://medium.com/@fmoessle/use-html-and-puppeteer-to-create-pdfs-in-node-js-566dbaf9d9ca
-
   const startTimeInMs = performance.now();
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
