@@ -11,6 +11,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "puppeteer": "18.1.x"
+    "puppeteer": "19.x"
   }
 }
