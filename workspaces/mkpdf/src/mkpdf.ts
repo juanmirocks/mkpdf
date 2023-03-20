@@ -47,7 +47,7 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
     const pagePromise = browser.newPage();
 
     return printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(() => {
-      pagePromise.then(page => page.close())
+      return pagePromise.then(page => page.close())
     });
   });
 };
