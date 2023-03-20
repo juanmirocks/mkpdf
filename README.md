@@ -1,4 +1,5 @@
-[![npm version](https://badge.fury.io/js/parcel-reporter-mkpdf.svg)](https://badge.fury.io/js/parcel-reporter-mkpdf)
+[![npm](https://img.shields.io/npm/v/parcel-reporter-mkpdf)](https://www.npmjs.com/package/parcel-reporter-mkpdf)
+
 # parcel-reporter-mkpdf
 
 📦 Plugin for [Parcel](https://parceljs.org) web build tool:
@@ -8,9 +9,9 @@ The exported PDF will look the same as if you had used the `Print` functionality
 
 Key features:
 
-* 💫 Quick, **iterative** development: your PDF is generated every time `parcel` finishes an HTML built.
-* 💅 Your CSS/Less/Sass **style** will also be applied.
-* 🚀 The "printing" of the PDFs is **fast** thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
+* 💫 **Iterative** development: your PDF is generated every time `parcel` finishes an HTML built.
+* 🎨 **Style** the PDFs with your CSS/Less/Sass.
+* 🚀 **Fast** "printing" of the PDFs thanks to internal caching. Your HTML linked external files (e.g. .js/.css) will be fetched only once.
 
 
 ## Install package
