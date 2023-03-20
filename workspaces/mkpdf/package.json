@@ -13,6 +13,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "puppeteer": "19.x"
+    "puppeteer": ">=18.x <=19.x"
   }
 }
