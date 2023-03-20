@@ -1,16 +1,18 @@
 {
   "name": "mkpdf",
-  "version": "1.0.0",
+  "version": "1.0.1-wip2",
   "description": "",
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
-  "source": "src/mkpdf.ts",
-  "main": "dist/mkpdf.js",
+  "source": "src/cli.ts",
+  "main": "dist/cli.js",
   "scripts": {
-    "build": "parcel build",
+    "clean": "rm  dist/* 2> /dev/null || true",
+    "_build": "parcel build",
+    "build": "npm run clean; npm run _build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "puppeteer": "18.1.x"
+    "puppeteer": ">=18.x <=19.x"
   }
 }
