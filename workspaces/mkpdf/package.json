@@ -7,7 +7,9 @@
   "source": "src/cli.ts",
   "main": "dist/cli.js",
   "scripts": {
-    "build": "parcel build",
+    "clean": "rm  dist/* 2> /dev/null || true",
+    "_build": "parcel build",
+    "build": "npm run clean; npm run _build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
