@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/parcel-reporter-mkpdf)](https://www.npmjs.com/package/parcel-reporter-mkpdf)
+[![npm](https://img.shields.io/npm/v/parcel-reporter-mkpdf?style=for-the-badge)](https://www.npmjs.com/package/parcel-reporter-mkpdf)
 
 # parcel-reporter-mkpdf
 
