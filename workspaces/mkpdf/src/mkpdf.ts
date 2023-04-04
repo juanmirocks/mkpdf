@@ -92,6 +92,8 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
     path: outputPdfFilepath,
     printBackground: true,
     format: "A4",
+    //Prioritize size format if defined in @page CSS rule
+    preferCSSPageSize: true
   });
 
   process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${outputPdfFilepath}\n`);
