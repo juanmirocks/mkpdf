@@ -22,10 +22,16 @@ function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
   return Math.round(((performance.now() - startTimeInMs) + Number.EPSILON));
 }
 
-/** Create a browser instance */
-export async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
+/**
+ * Create a browser instance.
+ *
+ * @param extraLaunchOptions Optional, JSON object with extra [PuppeteerLaunchOptions](https://pptr.dev/api/puppeteer.puppeteerlaunchoptions).
+ */
+export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Promise<puppeteer.Browser> {
+  //See all available launch options:
   return puppeteer.launch({
-    headless: true
+    headless: true,
+    ...extraLaunchOptions
   });
 }
 
