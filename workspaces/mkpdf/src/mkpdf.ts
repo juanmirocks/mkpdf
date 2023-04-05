@@ -68,7 +68,7 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
  * @param pagePromise a puppeteer's already created page to benefit from its cache.
  * @param inputHtmlFilepath HTML file full path
  * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
- * @param extraPdfOptions Optional, JSON object with extra [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions) for Puppeteer's `Page.pdf()`.
+ * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
 export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined, extraPdfOptions: any = {}): Promise<string> {
