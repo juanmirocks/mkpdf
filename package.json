@@ -1,6 +1,6 @@
 {
   "name": "parcel-reporter-mkpdf",
-  "version": "1.0.2-wip",
+  "version": "1.0.2",
   "description": "📦🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
   "keywords": [
     "plugin",
