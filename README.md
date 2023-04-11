@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/parcel-reporter-mkpdf)](https://www.npmjs.com/package/parcel-reporter-mkpdf)
+[![npm](https://img.shields.io/npm/v/parcel-reporter-mkpdf?style=for-the-badge)](https://www.npmjs.com/package/parcel-reporter-mkpdf)
 
 # parcel-reporter-mkpdf
 
@@ -49,7 +49,7 @@ As an alternative, use the `--reporter` option in parcel's [CLI](https://parcelj
 npx parcel serve --reporter parcel-reporter-mkpdf
 ```
 
-That's all! From then on, each time parcel builds an HTML (e.g., `dist/someFilename.html`), the PDF will be generated in the same folder and filename but with changed file extension (i.e., `dist/someFilename.pdf`).
+That's all! From then on, each time parcel builds an HTML (e.g., `dist/someFilename.html`), the PDF will be generated in the same folder, with same filename but with changed file extension (i.e., `dist/someFilename.pdf`).
 
 
 ## Coding

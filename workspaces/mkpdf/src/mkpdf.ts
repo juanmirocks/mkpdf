@@ -22,32 +22,49 @@ function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
   return Math.round(((performance.now() - startTimeInMs) + Number.EPSILON));
 }
 
-/** Create a browser instance */
-export async function launchPuppeteerBrowser(): Promise<puppeteer.Browser> {
+/**
+ * Create a browser instance.
+ *
+ * @param extraLaunchOptions Optional, JSON object with extra [PuppeteerLaunchOptions](https://pptr.dev/api/puppeteer.puppeteerlaunchoptions).
+ */
+export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Promise<puppeteer.Browser> {
+  //See all available launch options:
   return puppeteer.launch({
-    headless: true
+    headless: true,
+    ...extraLaunchOptions
   });
 }
 
-/** Close the browser instance */
-export async function closePuppeteerBrowser(browserPromise: Promise<puppeteer.Browser>): Promise<void> {
-  return browserPromise.then(x => x.close());
+/**
+ * Create a page given the underlying `browserPrm`.
+ */
+export async function launchPuppeteerPage(browserPrm: Promise<puppeteer.Browser>): Promise<puppeteer.Page> {
+  return browserPrm.then(browser => browser.newPage());
 }
 
-export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
-  const browserPromise = launchPuppeteerBrowser();
+/**
+ * Close the browser instance.
+ */
+export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browser>): Promise<void> {
+  return browserPrm.then(x => x.close());
+}
 
-  return printAsPdfWithBrowser(browserPromise, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
-    closePuppeteerBrowser(browserPromise);
+//-----------------------------------------------------------------------------
+
+export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+  const browserPrm = launchPuppeteerBrowser();
+
+  return printAsPdfWithBrowser(browserPrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
+    closePuppeteerBrowser(browserPrm);
   });
 };
 
-export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
-  return browserPromise.then(async browser => {
-    const pagePromise: Promise<puppeteer.Page> = browser.newPage();
+export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+  return browserPrm.then(async browser => {
+    const pagePrm: Promise<puppeteer.Page> = browser.newPage();
 
-    return printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
-      return pagePromise.then(page => page.close())
+    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
+      return pagePrm.then(page => page.close())
     });
   });
 };
@@ -59,18 +76,19 @@ export async function printAsPdfWithBrowser(browserPromise: Promise<puppeteer.Br
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
  * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
  *
- * @param pagePromise a puppeteer's already created page to benefit from its cache.
+ * @param pagePrm a puppeteer's already created page to benefit from its cache.
  * @param inputHtmlFilepath HTML file full path
  * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
+ * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined, extraPdfOptions: any = {}): Promise<string> {
   const startTimeInMs = performance.now();
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing PDF into: ${outputPdfFilepath} ... \n`);
 
-  const page = await pagePromise;
+  const page = await pagePrm;
 
   // Get HTML content from HTML file and set the browser page's with it
   const html = fs.readFileSync(inputHtmlFilepath, "utf-8");
@@ -90,9 +108,12 @@ export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.P
   // Download the PDF; see all options: https://pptr.dev/api/puppeteer.pdfoptions
   await page.pdf({
     path: outputPdfFilepath,
-    // margin: { top: '0px', right: '0px', bottom: '0px', left: '0px' },
     printBackground: true,
     format: "A4",
+    //Prioritize size format if defined in @page CSS rule
+    preferCSSPageSize: true,
+    //
+    ...extraPdfOptions
   });
 
   process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${outputPdfFilepath}\n`);
