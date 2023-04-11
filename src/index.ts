@@ -53,7 +53,7 @@ export default new Reporter({
       //In serve/watch mode, a `watchEnd` event is emitted at the end: https://parceljs.org/plugin-system/reporter/#watcher-events
       (opts.event.type === "watchEnd") ||
       //In build mode there is no final event, so we check for the following options to know if the building finished completely
-      ((opts.event.type === "buildSuccess" || opts.event.type === "buildFailure") && ((opts.options.serveOptions === false) || (opts.options.mode === "production")))
+      ((opts.event.type === "buildSuccess" || opts.event.type === "buildFailure") && ((opts.options.serveOptions === false) || (opts.options.mode === "production")));
 
     if (isBuildingEnded) {
       await closeResources(opts.logger);
