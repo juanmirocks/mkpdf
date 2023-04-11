@@ -35,10 +35,21 @@ export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Prom
   });
 }
 
-/** Close the browser instance */
+/**
+ * Create a page given the underlying `browserPrm`.
+ */
+export async function launchPuppeteerPage(browserPrm: Promise<puppeteer.Browser>): Promise<puppeteer.Page> {
+  return browserPrm.then(browser => browser.newPage());
+}
+
+/**
+ * Close the browser instance.
+ */
 export async function closePuppeteerBrowser(browserPromise: Promise<puppeteer.Browser>): Promise<void> {
   return browserPromise.then(x => x.close());
 }
+
+//-----------------------------------------------------------------------------
 
 export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   const browserPromise = launchPuppeteerBrowser();
