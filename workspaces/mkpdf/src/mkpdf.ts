@@ -61,10 +61,10 @@ export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt:
 
 export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
   return browserPrm.then(async browser => {
-    const pagePromise: Promise<puppeteer.Page> = browser.newPage();
+    const pagePrm: Promise<puppeteer.Page> = browser.newPage();
 
-    return printAsPdfWithBrowserPage(pagePromise, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
-      return pagePromise.then(page => page.close())
+    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
+      return pagePrm.then(page => page.close())
     });
   });
 };
@@ -76,19 +76,19 @@ export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browse
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
  * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
  *
- * @param pagePromise a puppeteer's already created page to benefit from its cache.
+ * @param pagePrm a puppeteer's already created page to benefit from its cache.
  * @param inputHtmlFilepath HTML file full path
  * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
  * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(pagePromise: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined, extraPdfOptions: any = {}): Promise<string> {
+export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined, extraPdfOptions: any = {}): Promise<string> {
   const startTimeInMs = performance.now();
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
   process.stderr.write(`Printing PDF into: ${outputPdfFilepath} ... \n`);
 
-  const page = await pagePromise;
+  const page = await pagePrm;
 
   // Get HTML content from HTML file and set the browser page's with it
   const html = fs.readFileSync(inputHtmlFilepath, "utf-8");
