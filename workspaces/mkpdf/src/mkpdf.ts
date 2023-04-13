@@ -28,7 +28,6 @@ function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
  * @param extraLaunchOptions Optional, JSON object with extra [PuppeteerLaunchOptions](https://pptr.dev/api/puppeteer.puppeteerlaunchoptions).
  */
 export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Promise<puppeteer.Browser> {
-  //See all available launch options:
   return puppeteer.launch({
     headless: true,
     ...extraLaunchOptions
