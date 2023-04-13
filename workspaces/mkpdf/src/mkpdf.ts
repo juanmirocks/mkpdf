@@ -57,13 +57,6 @@ export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Prom
 }
 
 /**
- * Create a page given the underlying `browserPrm`.
- */
-export async function launchPuppeteerPage(browserPrm: Promise<puppeteer.Browser>): Promise<puppeteer.Page> {
-  return browserPrm.then(browser => browser.newPage());
-}
-
-/**
  * Close the browser instance.
  */
 export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browser>): Promise<void> {
