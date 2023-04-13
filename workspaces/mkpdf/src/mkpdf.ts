@@ -97,9 +97,16 @@ export async function printAsPdfWithBrowserPage(input: PrintMainInput & { pagePr
   const isSameUrl = (page.url() === input.goToUrl);
   const waitUntil = (input.waitUntil || default_waitUntil)(isSameUrl);
 
-  await page.goto(input.goToUrl, {
-    waitUntil: waitUntil
-  });
+  if (isSameUrl) {
+    await page.reload({
+      waitUntil: waitUntil
+    });
+  }
+  else {
+    await page.goto(input.goToUrl, {
+      waitUntil: waitUntil
+    });
+  }
 
   // "Force" CSS style
   if (input.cssFilepathOpt) {
