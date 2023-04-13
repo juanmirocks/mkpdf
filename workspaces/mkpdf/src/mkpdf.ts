@@ -115,10 +115,14 @@ export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>
 
   const page = await pagePrm;
 
-  await page.goto(addUrlFileScheme(inputHtmlFilepath), {
+  const goToUrl = addUrlFileScheme(inputHtmlFilepath);
+  const isSameResource = (page.url() === goToUrl);
+  const waitUntil = (isSameResource) ? "load" : "networkidle0";
+
+  await page.goto(goToUrl, {
     // See options: https://pptr.dev/api/puppeteer.page.goto
     // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
-    waitUntil: "networkidle0"
+    waitUntil: waitUntil
   });
 
   // "Force" CSS style
