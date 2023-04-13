@@ -33,10 +33,25 @@ export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browse
 //-----------------------------------------------------------------------------
 
 export interface PrintMainInput {
-  readonly goToUrl: string,
-  readonly outputPdfFilepath: string,
-  readonly cssFilepathOpt?: string,
+  readonly goToUrl: string
+  readonly outputPdfFilepath: string
+  readonly cssFilepathOpt?: string
   readonly extraPdfOptions?: any
+
+  /**
+   * Decide the parameter `waitUntil` for Puppeteer's [Page.goto()](https://pptr.dev/api/puppeteer.page.goto).
+   *
+   * HINT: If your PDF doesn't load all external resources correctly, you might set this function to always return `networkidle0`.
+   * See issue: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
+   *
+   * @param isSameUrl true if the requested URL is already loaded in the underlying browser page; false otherwise.
+   * @returns `waitUntil` valid string event for Puppeteer.
+   */
+  readonly waitUntil?: (isSameUrl: boolean) => puppeteer.PuppeteerLifeCycleEvent | puppeteer.PuppeteerLifeCycleEvent[];
+}
+
+function default_waitUntil(isSameUrl: boolean): puppeteer.PuppeteerLifeCycleEvent | puppeteer.PuppeteerLifeCycleEvent[] {
+  return (isSameUrl) ? "load" : "networkidle0";
 }
 
 //-----------------------------------------------------------------------------
@@ -79,12 +94,10 @@ export async function printAsPdfWithBrowserPage(input: PrintMainInput & { pagePr
 
   const page = await input.pagePrm;
 
-  const isSameResource = (page.url() === input.goToUrl);
-  const waitUntil = (isSameResource) ? "load" : "networkidle0";
+  const isSameUrl = (page.url() === input.goToUrl);
+  const waitUntil = (input.waitUntil || default_waitUntil)(isSameUrl);
 
   await page.goto(input.goToUrl, {
-    // See options: https://pptr.dev/api/puppeteer.page.goto
-    // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
     waitUntil: waitUntil
   });
 
