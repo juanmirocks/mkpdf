@@ -33,9 +33,8 @@ export default new Reporter({
     if (opts.event.type === "buildSuccess") {
       const bundles: parcelTypes.PackagedBundle[] = opts.event.bundleGraph.getBundles();
       const htmlInput = getBundleFilePathByType(bundles, "html");
-      const cssInputOpt = getBundleFilePathByType(bundles, "css");
 
-      opts.logger.info({ message: `Built:\n* HTML: ${htmlInput}\n* CSS?: ${cssInputOpt}\n` });
+      opts.logger.info({ message: `Built HTML: ${htmlInput}\n` });
 
       if (htmlInput) {
         //The browser might get disconnected if the computer sleeps
@@ -47,10 +46,10 @@ export default new Reporter({
           PUPPETEER_BROWSER_PAGE_PROMISE = mkpdf.launchPuppeteerPage(PUPPETEER_BROWSER_PROMISE);
         }
 
-        await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput, cssInputOpt);
+        await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput);
       }
       else {
-        opts.logger.error({ message: "❌ No built html" });
+        opts.logger.error({ message: "❌ No built HTML" });
       }
     }
 
