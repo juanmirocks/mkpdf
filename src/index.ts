@@ -4,6 +4,7 @@
 import { Reporter } from "@parcel/plugin";
 import parcelTypes from "@parcel/types";
 import * as mkpdf from "../workspaces/mkpdf/src/mkpdf";
+import * as util from "../workspaces/mkpdf/src/util";
 
 // ----------------------------------------------------------------------------
 
@@ -31,9 +32,13 @@ export default new Reporter({
       const bundles: parcelTypes.PackagedBundle[] = opts.event.bundleGraph.getBundles();
       const htmlInput = getBundleFilePathByType(bundles, "html");
 
-      opts.logger.info({ message: `Built HTML: ${htmlInput}\n` });
 
       if (htmlInput) {
+        const htmlInputUrl = util.addUrlFileScheme(htmlInput);
+        const outputPdfFilepath = util.changeExtension(htmlInput, ".pdf");
+
+        opts.logger.info({ message: `Built HTML: ${htmlInput}\nPrinting PDF into: ${outputPdfFilepath} ... \n` });
+
         //The browser might get disconnected if the computer sleeps
         if (!(await PUPPETEER_BROWSER_PROMISE).isConnected()) {
           await closeResources(opts.logger);
@@ -42,7 +47,7 @@ export default new Reporter({
           PUPPETEER_BROWSER_PROMISE = mkpdf.launchPuppeteerBrowser();
         }
 
-        await mkpdf.printAsPdfWithBrowser(PUPPETEER_BROWSER_PROMISE, htmlInput);
+        await mkpdf.printAsPdfWithBrowser({ browserPrm: PUPPETEER_BROWSER_PROMISE, goToUrl: htmlInputUrl, outputPdfFilepath: outputPdfFilepath });
       }
       else {
         opts.logger.error({ message: "❌ No built HTML" });

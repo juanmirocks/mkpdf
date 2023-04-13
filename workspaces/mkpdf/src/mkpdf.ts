@@ -32,22 +32,31 @@ export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browse
 
 //-----------------------------------------------------------------------------
 
-export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
+export interface PrintMainInput {
+  readonly goToUrl: string,
+  readonly outputPdfFilepath: string,
+  readonly cssFilepathOpt?: string,
+  readonly extraPdfOptions?: any
+}
+
+//-----------------------------------------------------------------------------
+
+export async function printAsPdf(input: PrintMainInput): Promise<string> {
   const browserPrm = launchPuppeteerBrowser();
 
-  return printAsPdfWithBrowser(browserPrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
+  return printAsPdfWithBrowser({ ...input, browserPrm: browserPrm }).finally(async () => {
     closePuppeteerBrowser(browserPrm);
   });
 };
 
 
-export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
-  return browserPrm.then(async browser => {
+export async function printAsPdfWithBrowser(input: PrintMainInput & { browserPrm: Promise<puppeteer.Browser> }): Promise<string> {
+  return input.browserPrm.then(async browser => {
 
     //We reuse the first page, which we assume (but do not test) to always exist
     const pagePrm: Promise<puppeteer.Page> = browser.pages().then(pages => pages[0]);
 
-    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt);
+    return printAsPdfWithBrowserPage({ ...input, pagePrm: pagePrm });
   });
 };
 
@@ -61,48 +70,44 @@ export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browse
  *
  * @param pagePrm a puppeteer's already created page to benefit from its cache.
  * @param inputHtmlFilepath HTML file full path.
- * @param inputCssFilepathOpt Optional, use this to load an arbitrary CSS file.
+ * @param cssFilepathOpt Optional, use this to load an arbitrary CSS file.
  * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt?: string, extraPdfOptions: any = {}): Promise<string> {
+export async function printAsPdfWithBrowserPage(input: PrintMainInput & { pagePrm: Promise<puppeteer.Page> }): Promise<string> {
   const startTimeInMs = performance.now();
 
-  const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
-  process.stderr.write(`Printing PDF into: ${outputPdfFilepath} ... \n`);
+  const page = await input.pagePrm;
 
-  const page = await pagePrm;
-
-  const goToUrl = addUrlFileScheme(inputHtmlFilepath);
-  const isSameResource = (page.url() === goToUrl);
+  const isSameResource = (page.url() === input.goToUrl);
   const waitUntil = (isSameResource) ? "load" : "networkidle0";
 
-  await page.goto(goToUrl, {
+  await page.goto(input.goToUrl, {
     // See options: https://pptr.dev/api/puppeteer.page.goto
     // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
     waitUntil: waitUntil
   });
 
   // "Force" CSS style
-  if (inputCssFilepathOpt) {
-    await page.addStyleTag({ path: inputCssFilepathOpt });
+  if (input.cssFilepathOpt) {
+    await page.addStyleTag({ path: input.cssFilepathOpt });
     // Wait for all fonts to be ready
     await page.evaluateHandle("document.fonts.ready");
   }
 
   // Download the PDF; see all options: https://pptr.dev/api/puppeteer.pdfoptions
   await page.pdf({
-    path: outputPdfFilepath,
+    path: input.outputPdfFilepath,
     printBackground: true,
     format: "A4",
     //Prioritize size format if defined in @page CSS rule
     preferCSSPageSize: true,
     //
-    ...extraPdfOptions
+    ...input.extraPdfOptions
   });
 
-  process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${outputPdfFilepath}\n`);
+  process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${input.outputPdfFilepath}\n`);
 
-  return outputPdfFilepath;
+  return input.outputPdfFilepath;
 };
 
