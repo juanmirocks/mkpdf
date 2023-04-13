@@ -17,10 +17,7 @@ function getBundleFilePathByType(bundles: parcelTypes.PackagedBundle[], type: st
 
 let PUPPETEER_BROWSER_PROMISE = mkpdf.launchPuppeteerBrowser();
 
-let PUPPETEER_BROWSER_PAGE_PROMISE = mkpdf.launchPuppeteerPage(PUPPETEER_BROWSER_PROMISE);
-
 async function closeResources(logger: parcelTypes.PluginLogger): Promise<void> {
-  // (await PUPPETEER_BROWSER_PAGE_PROMISE).close(); it suffices closing the browser
   return mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE).then(_ => {
     logger.verbose({ message: "Liberating resources: DONE" });
   });
@@ -43,10 +40,9 @@ export default new Reporter({
 
           opts.logger.verbose({ message: `Relaunching puppeteer resources` });
           PUPPETEER_BROWSER_PROMISE = mkpdf.launchPuppeteerBrowser();
-          PUPPETEER_BROWSER_PAGE_PROMISE = mkpdf.launchPuppeteerPage(PUPPETEER_BROWSER_PROMISE);
         }
 
-        await mkpdf.printAsPdfWithBrowserPage(PUPPETEER_BROWSER_PAGE_PROMISE, htmlInput);
+        await mkpdf.printAsPdfWithBrowser(PUPPETEER_BROWSER_PROMISE, htmlInput);
       }
       else {
         opts.logger.error({ message: "❌ No built HTML" });
