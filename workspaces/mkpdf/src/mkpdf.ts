@@ -17,9 +17,35 @@ function changeExtension(filePath: string, extensionWithDot: string): string {
   return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
 }
 
+
 function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
   return Math.round(((performance.now() - startTimeInMs) + Number.EPSILON));
 }
+
+
+/**
+ * Add `file://` URL scheme to the given `filepath`.
+ *
+ * @param filepath either an absolute or relative path.
+ *  ASSUMPTION (BUT NOT TESTED): `filepath` does not already include any URL scheme.
+ *
+ * @returns file path prefixed with `file://` URL scheme.
+ */
+function addUrlFileScheme(filepath: string): string {
+  // if (filepath.startsWith("file://")) {
+  //   return filepath
+  // }
+  if (filepath.startsWith("/")) {
+    return `file://${filepath}`;
+  }
+  else {
+    //WARNING: here we are making our code depend on Node.js -- For Deno, see: https://stackoverflow.com/a/76004806/341320
+    let cwd = process.cwd();
+    return `file://${cwd}/${filepath}`;
+  }
+}
+
+// ----------------------------------------------------------------------------
 
 /**
  * Create a browser instance.
@@ -66,29 +92,6 @@ export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browse
     });
   });
 };
-
-
-/**
- * Add `file://` URL scheme to the given `filepath`.
- *
- * @param filepath either an absolute or relative path.
- *  ASSUMPTION (BUT NOT TESTED): `filepath` does not already include any URL scheme.
- *
- * @returns file path prefixed with `file://` URL scheme.
- */
-function addUrlFileScheme(filepath: string): string {
-  // if (filepath.startsWith("file://")) {
-  //   return filepath
-  // }
-  if (filepath.startsWith("/")) {
-    return `file://${filepath}`;
-  }
-  else {
-    //WARNING: here we are making our code depend on Node.js -- For Deno, see: https://stackoverflow.com/a/76004806/341320
-    let cwd = process.cwd();
-    return `file://${cwd}/${filepath}`;
-  }
-}
 
 
 /**
