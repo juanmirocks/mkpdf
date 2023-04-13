@@ -37,7 +37,7 @@ export default new Reporter({
         const htmlInputUrl = util.addUrlFileScheme(htmlInput);
         const outputPdfFilepath = util.changeExtension(htmlInput, ".pdf");
 
-        opts.logger.info({ message: `Built HTML: ${htmlInput}\nPrinting PDF into: ${outputPdfFilepath} ... \n` });
+        opts.logger.info({ message: `\nBuilt HTML: ${htmlInput}\nPrinting PDF: ${outputPdfFilepath} ... \n` });
 
         //The browser might get disconnected if the computer sleeps
         if (!(await PUPPETEER_BROWSER_PROMISE).isConnected()) {
