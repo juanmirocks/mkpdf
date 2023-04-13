@@ -9,7 +9,7 @@
   "scripts": {
     "clean": "rm  dist/* 2> /dev/null || true",
     "_prod": "parcel build",
-    "prod": "npm run clean; npm run _build",
+    "prod": "npm run clean; npm run _prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
