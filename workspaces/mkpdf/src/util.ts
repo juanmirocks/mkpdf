@@ -3,15 +3,15 @@
 
 
 /**
- * Change `filePath`'s extension.
+ * Change `filepath`'s extension.
  *
- * IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
+ * IMPORTANT: it's assumed (but not tested) that `filepath` indeed has a file extension.
  *
- * @param filePath simple, relative, or full path
- * @param extensionWithDot extension to replace with; it must include the dot, for example '.html'
+ * @param filepath simple, relative, or full path
+ * @param newExtensionWithDot extension to replace with; it must include the dot, for example '.html'
  */
-export function changeExtension(filePath: string, extensionWithDot: string): string {
-  return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
+export function changeExtension(filepath: string, newExtensionWithDot: string): string {
+  return filepath.substring(0, filepath.lastIndexOf(".")) + newExtensionWithDot;
 }
 
 
