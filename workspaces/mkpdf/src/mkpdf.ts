@@ -99,8 +99,8 @@ function addUrlFileScheme(filepath: string): string {
  * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
  *
  * @param pagePrm a puppeteer's already created page to benefit from its cache.
- * @param inputHtmlFilepath HTML file full path
- * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
+ * @param inputHtmlFilepath HTML file full path.
+ * @param inputCssFilepathOpt Optional, use this to load an arbitrary CSS file.
  * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
