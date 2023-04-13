@@ -83,13 +83,14 @@ export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt?
   });
 };
 
+
 export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
   return browserPrm.then(async browser => {
-    const pagePrm: Promise<puppeteer.Page> = browser.newPage();
 
-    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
-      return pagePrm.then(page => page.close())
-    });
+    //We reuse the first page, which we assume (but do not test) to always exist
+    const pagePrm: Promise<puppeteer.Page> = browser.pages().then(pages => pages[0]);
+
+    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt);
   });
 };
 

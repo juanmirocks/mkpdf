@@ -16,7 +16,6 @@ const inputHtmlFilepath = process.argv[2];
 const inputCssFilepathOpt = process.argv[3];
 
 const browserPrm = mkpdf.launchPuppeteerBrowser({ headless: true });
-const pagePrm = mkpdf.launchPuppeteerPage(browserPrm);
 
-mkpdf.printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt)
+mkpdf.printAsPdfWithBrowser(browserPrm, inputHtmlFilepath, inputCssFilepathOpt)
   .finally(() => mkpdf.closePuppeteerBrowser(browserPrm));
