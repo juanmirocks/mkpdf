@@ -113,12 +113,12 @@ export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>
   const page = await pagePrm;
 
   await page.goto(addUrlFileScheme(inputHtmlFilepath), {
-    // See options: https://pptr.dev/api/puppeteer.page.setcontent
+    // See options: https://pptr.dev/api/puppeteer.page.goto
     // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
     waitUntil: "networkidle0"
   });
 
-  // "Force" css style (without this, my css didn't get applied)
+  // "Force" CSS style
   if (inputCssFilepathOpt) {
     await page.addStyleTag({ path: inputCssFilepathOpt });
     // Wait for all fonts to be ready
