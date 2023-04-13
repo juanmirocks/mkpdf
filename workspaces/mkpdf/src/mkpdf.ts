@@ -51,7 +51,7 @@ export interface PrintMainInput {
 }
 
 function default_waitUntil(isSameUrl: boolean): puppeteer.PuppeteerLifeCycleEvent | puppeteer.PuppeteerLifeCycleEvent[] {
-  return (isSameUrl) ? "load" : "networkidle0";
+  return (isSameUrl) ? "networkidle2" : "networkidle0";
 }
 
 //-----------------------------------------------------------------------------
