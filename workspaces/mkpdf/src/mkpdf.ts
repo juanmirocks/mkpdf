@@ -33,9 +33,13 @@ export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browse
 //-----------------------------------------------------------------------------
 
 export interface PrintMainInput {
+  /** resource's URL to print, e.g. a website or an HTML file prefixed with the `file://` URL scheme */
   readonly goToUrl: string
+  /** file path to print/save the PDF to */
   readonly outputPdfFilepath: string
+  /** Optional, use this to load an arbitrary CSS file. */
   readonly cssFilepathOpt?: string
+  /** Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions). */
   readonly extraPdfOptions?: any
 
   /**
@@ -65,10 +69,14 @@ export async function printAsPdf(input: PrintMainInput): Promise<string> {
 };
 
 
-export async function printAsPdfWithBrowser(input: PrintMainInput & { browserPrm: Promise<puppeteer.Browser> }): Promise<string> {
+export async function printAsPdfWithBrowser(
+  input: PrintMainInput & {
+  /** puppeteer's already launched browser to benefit from its cache. We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused. */
+  browserPrm: Promise<puppeteer.Browser>
+}): Promise<string> {
   return input.browserPrm.then(async browser => {
 
-    //We reuse the first page, which we assume (but do not test) to always exist
+    //We reuse the first page
     const pagePrm: Promise<puppeteer.Page> = browser.pages().then(pages => pages[0]);
 
     return printAsPdfWithBrowserPage({ ...input, pagePrm: pagePrm });
@@ -81,15 +89,15 @@ export async function printAsPdfWithBrowser(input: PrintMainInput & { browserPrm
  *
  * Use this method to reuse an already created browser page to benefit from its cache.
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
- * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
+ * In that case, the page implicitly caches those resources. Thus, the PDF generation is faster.
  *
- * @param pagePrm a puppeteer's already created page to benefit from its cache.
- * @param inputHtmlFilepath HTML file full path.
- * @param cssFilepathOpt Optional, use this to load an arbitrary CSS file.
- * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(input: PrintMainInput & { pagePrm: Promise<puppeteer.Page> }): Promise<string> {
+export async function printAsPdfWithBrowserPage(
+  input: PrintMainInput & {
+  /** puppeteer's already created page to benefit from its cache. */
+  pagePrm: Promise<puppeteer.Page>
+}): Promise<string> {
   const startTimeInMs = performance.now();
 
   const page = await input.pagePrm;
@@ -108,8 +116,8 @@ export async function printAsPdfWithBrowserPage(input: PrintMainInput & { pagePr
     });
   }
 
-  // "Force" CSS style
   if (input.cssFilepathOpt) {
+    // "Force" CSS style
     await page.addStyleTag({ path: input.cssFilepathOpt });
     // Wait for all fonts to be ready
     await page.evaluateHandle("document.fonts.ready");
