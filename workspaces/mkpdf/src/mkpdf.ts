@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import puppeteer from "puppeteer";
-import fs from "fs";
 
 // ----------------------------------------------------------------------------
 
@@ -68,6 +67,30 @@ export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browse
   });
 };
 
+
+/**
+ * Add `file://` URL scheme to the given `filepath`.
+ *
+ * @param filepath either an absolute or relative path.
+ *  ASSUMPTION (BUT NOT TESTED): `filepath` does not already include any URL scheme.
+ *
+ * @returns file path prefixed with `file://` URL scheme.
+ */
+function addUrlFileScheme(filepath: string): string {
+  // if (filepath.startsWith("file://")) {
+  //   return filepath
+  // }
+  if (filepath.startsWith("/")) {
+    return `file://${filepath}`;
+  }
+  else {
+    //WARNING: here we are making our code depend on Node.js -- For Deno, see: https://stackoverflow.com/a/76004806/341320
+    let cwd = process.cwd();
+    return `file://${cwd}/${filepath}`;
+  }
+}
+
+
 /**
  * Generate (print) PDF out of an input HTML file.
  *
@@ -89,9 +112,7 @@ export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>
 
   const page = await pagePrm;
 
-  // Get HTML content from HTML file and set the browser page's with it
-  const html = fs.readFileSync(inputHtmlFilepath, "utf-8");
-  await page.setContent(html, {
+  await page.goto(addUrlFileScheme(inputHtmlFilepath), {
     // See options: https://pptr.dev/api/puppeteer.page.setcontent
     // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
     waitUntil: "networkidle0"
