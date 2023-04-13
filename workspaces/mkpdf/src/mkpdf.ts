@@ -31,10 +31,7 @@ function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
  *
  * @returns file path prefixed with `file://` URL scheme.
  */
-function addUrlFileScheme(filepath: string): string {
-  // if (filepath.startsWith("file://")) {
-  //   return filepath
-  // }
+export function addUrlFileScheme(filepath: string): string {
   if (filepath.startsWith("/")) {
     return `file://${filepath}`;
   }
