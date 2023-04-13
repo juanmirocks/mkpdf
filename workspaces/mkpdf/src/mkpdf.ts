@@ -51,7 +51,7 @@ export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browse
 
 //-----------------------------------------------------------------------------
 
-export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
   const browserPrm = launchPuppeteerBrowser();
 
   return printAsPdfWithBrowser(browserPrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
@@ -59,7 +59,7 @@ export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt:
   });
 };
 
-export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined): Promise<string> {
+export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
   return browserPrm.then(async browser => {
     const pagePrm: Promise<puppeteer.Page> = browser.newPage();
 
@@ -82,7 +82,7 @@ export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browse
  * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt: string | undefined, extraPdfOptions: any = {}): Promise<string> {
+export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt?: string, extraPdfOptions: any = {}): Promise<string> {
   const startTimeInMs = performance.now();
 
   const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
