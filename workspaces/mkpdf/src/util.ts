@@ -16,14 +16,22 @@ export function changeExtension(filepath: string, newExtensionWithDot: string): 
 
 
 /**
- * WARNING: using this function makes your code depend on Node.js.
- *
- * For Deno, see: https://stackoverflow.com/a/76004806/341320
+ * Ref: https://stackoverflow.com/a/76004806/341320
  *
  * @returns path to current working directory.
  */
 function cwd(): string {
-  return process.cwd();
+  try {
+    return process.cwd();
+  }
+  catch (error) {
+    if (error instanceof ReferenceError) {
+      return Deno.cwd();
+    }
+    else {
+      throw error;
+    }
+  }
 }
 
 
