@@ -3,6 +3,9 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
+  env: {
+    node: true
+  },
   ignorePatterns: ["**/dist/"],
   rules: {
     quotes: ["error", "double"],
