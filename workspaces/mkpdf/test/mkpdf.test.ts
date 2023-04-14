@@ -14,7 +14,8 @@ test("Print a website, creates a non-empty PDF file", async () => {
     const fileStats = fs.statSync(testPdfFilepath);
     expect(fileStats.size).toBeGreaterThan(0);
     afterAll;
-  } finally {
+  }
+  finally {
     fs.unlinkSync(testPdfFilepath);
   }
 });

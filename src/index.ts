@@ -19,7 +19,7 @@ function getBundleFilePathByType(bundles: parcelTypes.PackagedBundle[], type: st
 let PUPPETEER_BROWSER_PROMISE = mkpdf.launchPuppeteerBrowser();
 
 async function closeResources(logger: parcelTypes.PluginLogger): Promise<void> {
-  return mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE).then(_ => {
+  return mkpdf.closePuppeteerBrowser(PUPPETEER_BROWSER_PROMISE).then(() => {
     logger.verbose({ message: "Liberating resources: DONE" });
   });
 }
@@ -43,7 +43,7 @@ export default new Reporter({
         if (!(await PUPPETEER_BROWSER_PROMISE).isConnected()) {
           await closeResources(opts.logger);
 
-          opts.logger.verbose({ message: `Relaunching puppeteer resources` });
+          opts.logger.verbose({ message: "Relaunching puppeteer resources" });
           PUPPETEER_BROWSER_PROMISE = mkpdf.launchPuppeteerBrowser();
         }
 

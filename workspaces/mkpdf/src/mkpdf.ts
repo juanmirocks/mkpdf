@@ -66,7 +66,7 @@ export async function printAsPdf(input: PrintMainInput): Promise<string> {
   return printAsPdfWithBrowser({ ...input, browserPrm: browserPrm }).finally(async () => {
     closePuppeteerBrowser(browserPrm);
   });
-};
+}
 
 
 export async function printAsPdfWithBrowser(
@@ -81,7 +81,7 @@ export async function printAsPdfWithBrowser(
 
     return printAsPdfWithBrowserPage({ ...input, pagePrm: pagePrm });
   });
-};
+}
 
 
 /**
@@ -137,4 +137,4 @@ export async function printAsPdfWithBrowserPage(
   process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${input.outputPdfFilepath}\n`);
 
   return input.outputPdfFilepath;
-};
+}
