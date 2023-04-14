@@ -11,9 +11,10 @@ module.exports = {
     quotes: ["error", "double"],
     "brace-style": ["error", "stroustrup"],
     "max-len": [
-      "error",
+      "warn",
       {
-        code: 120
+        code: 144,
+        comments: 200
       }
     ]
   }
