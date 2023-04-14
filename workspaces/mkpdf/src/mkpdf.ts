@@ -66,14 +66,16 @@ export async function printAsPdf(input: PrintMainInput): Promise<string> {
   return printAsPdfWithBrowser({ ...input, browserPrm: browserPrm }).finally(async () => {
     closePuppeteerBrowser(browserPrm);
   });
-};
+}
 
 
 export async function printAsPdfWithBrowser(
   input: PrintMainInput & {
-  /** puppeteer's already launched browser to benefit from its cache. We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused. */
-  browserPrm: Promise<puppeteer.Browser>
-}): Promise<string> {
+    /** puppeteer's already launched browser to benefit from its cache.
+     * We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused.
+     */
+    browserPrm: Promise<puppeteer.Browser>
+  }): Promise<string> {
   return input.browserPrm.then(async browser => {
 
     //We reuse the first page
@@ -81,11 +83,11 @@ export async function printAsPdfWithBrowser(
 
     return printAsPdfWithBrowserPage({ ...input, pagePrm: pagePrm });
   });
-};
+}
 
 
 /**
- * Generate (print) PDF out of an input HTML file.
+ * Generate PDF given an HTML file or website URL.
  *
  * Use this method to reuse an already created browser page to benefit from its cache.
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
@@ -95,9 +97,9 @@ export async function printAsPdfWithBrowser(
  */
 export async function printAsPdfWithBrowserPage(
   input: PrintMainInput & {
-  /** puppeteer's already created page to benefit from its cache. */
-  pagePrm: Promise<puppeteer.Page>
-}): Promise<string> {
+    /** puppeteer's already created page to benefit from its cache. */
+    pagePrm: Promise<puppeteer.Page>
+  }): Promise<string> {
   const startTimeInMs = performance.now();
 
   const page = await input.pagePrm;
@@ -137,5 +139,4 @@ export async function printAsPdfWithBrowserPage(
   process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${input.outputPdfFilepath}\n`);
 
   return input.outputPdfFilepath;
-};
-
+}

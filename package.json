@@ -36,7 +36,9 @@
     "prod": "npm run clean; npm run _prod",
     "check": "tsc --noEmit",
     "check-watch": "npm run check -- -watch",
-    "test": "jest"
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "engines": {
     "parcel": "2.x"
@@ -52,6 +54,9 @@
     "@parcel/transformer-typescript-tsc": "^2.8.3",
     "@tsconfig/recommended": "^1.0.2",
     "@types/jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
     "jest": "^29.5.0",
     "parcel": "^2.8.3",
     "ts-jest": "^29.1.0",

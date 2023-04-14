@@ -9,7 +9,8 @@ import * as util from "./util";
 function hasProtocol(x: string): URL | undefined {
   try {
     return new URL(x);
-  } catch (e) {
+  }
+  catch (e) {
     //ignore
   }
 }
