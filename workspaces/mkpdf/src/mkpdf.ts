@@ -16,7 +16,7 @@ function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
  *
  * @param extraLaunchOptions Optional, JSON object with extra [PuppeteerLaunchOptions](https://pptr.dev/api/puppeteer.puppeteerlaunchoptions).
  */
-export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Promise<puppeteer.Browser> {
+export async function launchPuppeteerBrowser(extraLaunchOptions: puppeteer.PuppeteerLaunchOptions = {}): Promise<puppeteer.Browser> {
   return puppeteer.launch({
     headless: true,
     ...extraLaunchOptions
@@ -40,7 +40,7 @@ export interface PrintMainInput {
   /** Optional, use this to load an arbitrary CSS file. */
   readonly cssFilepathOpt?: string
   /** Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions). */
-  readonly extraPdfOptions?: any
+  readonly extraPdfOptions?: puppeteer.PDFOptions
 
   /**
    * Decide the parameter `waitUntil` for Puppeteer's [Page.goto()](https://pptr.dev/api/puppeteer.page.goto).
