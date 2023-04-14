@@ -36,7 +36,9 @@
     "prod": "npm run clean; npm run _prod",
     "check": "tsc --noEmit",
     "check-watch": "npm run check -- -watch",
-    "test": "jest"
+    "lint": "eslint . --fix",
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "engines": {
     "parcel": "2.x"
