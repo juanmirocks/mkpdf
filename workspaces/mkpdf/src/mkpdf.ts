@@ -85,7 +85,7 @@ export async function printAsPdfWithBrowser(
 
 
 /**
- * Generate (print) PDF out of an input HTML file.
+ * Generate PDF given an HTML file or website URL.
  *
  * Use this method to reuse an already created browser page to benefit from its cache.
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
@@ -138,4 +138,3 @@ export async function printAsPdfWithBrowserPage(
 
   return input.outputPdfFilepath;
 };
-
