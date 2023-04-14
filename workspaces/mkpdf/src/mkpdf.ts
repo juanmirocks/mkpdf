@@ -71,7 +71,9 @@ export async function printAsPdf(input: PrintMainInput): Promise<string> {
 
 export async function printAsPdfWithBrowser(
   input: PrintMainInput & {
-    /** puppeteer's already launched browser to benefit from its cache. We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused. */
+    /** puppeteer's already launched browser to benefit from its cache.
+     * We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused.
+     */
     browserPrm: Promise<puppeteer.Browser>
   }): Promise<string> {
   return input.browserPrm.then(async browser => {
