@@ -2,25 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import puppeteer from "puppeteer";
-import fs from "fs";
 
 // ----------------------------------------------------------------------------
-
-/**
- * Change `filePath`'s extension.
- *
- * IMPORTANT: it's assumed (but not tested) that `filePath` indeed has a file extension.
- *
- * @param filePath simple, relative, or full path
- * @param extensionWithDot extension to replace with; it must include the dot, for example '.html'
- */
-function changeExtension(filePath: string, extensionWithDot: string): string {
-  return filePath.substring(0, filePath.lastIndexOf(".")) + extensionWithDot;
-}
 
 function calcElapsedTimeInMilliseconds(startTimeInMs: number): number {
   return Math.round(((performance.now() - startTimeInMs) + Number.EPSILON));
 }
+
+// ----------------------------------------------------------------------------
 
 /**
  * Create a browser instance.
@@ -35,13 +24,6 @@ export async function launchPuppeteerBrowser(extraLaunchOptions: any = {}): Prom
 }
 
 /**
- * Create a page given the underlying `browserPrm`.
- */
-export async function launchPuppeteerPage(browserPrm: Promise<puppeteer.Browser>): Promise<puppeteer.Page> {
-  return browserPrm.then(browser => browser.newPage());
-}
-
-/**
  * Close the browser instance.
  */
 export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browser>): Promise<void> {
@@ -50,73 +32,110 @@ export async function closePuppeteerBrowser(browserPrm: Promise<puppeteer.Browse
 
 //-----------------------------------------------------------------------------
 
-export async function printAsPdf(inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
+export interface PrintMainInput {
+  /** resource's URL to print, e.g. a website or an HTML file prefixed with the `file://` URL scheme */
+  readonly goToUrl: string
+  /** file path to print/save the PDF to */
+  readonly outputPdfFilepath: string
+  /** Optional, use this to load an arbitrary CSS file. */
+  readonly cssFilepathOpt?: string
+  /** Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions). */
+  readonly extraPdfOptions?: any
+
+  /**
+   * Decide the parameter `waitUntil` for Puppeteer's [Page.goto()](https://pptr.dev/api/puppeteer.page.goto).
+   *
+   * HINT: If your PDF doesn't load all external resources correctly, you might set this function to always return `networkidle0`.
+   * See issue: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
+   *
+   * @param isSameUrl true if the requested URL is already loaded in the underlying browser page; false otherwise.
+   * @returns `waitUntil` valid string event for Puppeteer.
+   */
+  readonly waitUntil?: (isSameUrl: boolean) => puppeteer.PuppeteerLifeCycleEvent | puppeteer.PuppeteerLifeCycleEvent[];
+}
+
+function default_waitUntil(isSameUrl: boolean): puppeteer.PuppeteerLifeCycleEvent | puppeteer.PuppeteerLifeCycleEvent[] {
+  return (isSameUrl) ? "networkidle2" : "networkidle0";
+}
+
+//-----------------------------------------------------------------------------
+
+export async function printAsPdf(input: PrintMainInput): Promise<string> {
   const browserPrm = launchPuppeteerBrowser();
 
-  return printAsPdfWithBrowser(browserPrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
+  return printAsPdfWithBrowser({ ...input, browserPrm: browserPrm }).finally(async () => {
     closePuppeteerBrowser(browserPrm);
   });
 };
 
-export async function printAsPdfWithBrowser(browserPrm: Promise<puppeteer.Browser>, inputHtmlFilepath: string, inputCssFilepathOpt?: string): Promise<string> {
-  return browserPrm.then(async browser => {
-    const pagePrm: Promise<puppeteer.Page> = browser.newPage();
 
-    return printAsPdfWithBrowserPage(pagePrm, inputHtmlFilepath, inputCssFilepathOpt).finally(async () => {
-      return pagePrm.then(page => page.close())
-    });
+export async function printAsPdfWithBrowser(
+  input: PrintMainInput & {
+  /** puppeteer's already launched browser to benefit from its cache. We ASSUME, but DO NOT TEST, the browser has already an opened page, which is reused. */
+  browserPrm: Promise<puppeteer.Browser>
+}): Promise<string> {
+  return input.browserPrm.then(async browser => {
+
+    //We reuse the first page
+    const pagePrm: Promise<puppeteer.Page> = browser.pages().then(pages => pages[0]);
+
+    return printAsPdfWithBrowserPage({ ...input, pagePrm: pagePrm });
   });
 };
+
 
 /**
  * Generate (print) PDF out of an input HTML file.
  *
  * Use this method to reuse an already created browser page to benefit from its cache.
  * This is useful when you are iteratively printing your HTML (as in watch mode) and your HTML fetches some external resources.
- * In that case, the page implicitly caches those resources. Accordingly, the PDF generation is faster.
+ * In that case, the page implicitly caches those resources. Thus, the PDF generation is faster.
  *
- * @param pagePrm a puppeteer's already created page to benefit from its cache.
- * @param inputHtmlFilepath HTML file full path
- * @param inputCssFilepathOpt Optional, CSS file full path. Use this if, despite the HTML linking your CSS, the style doesn't get properly applied.
- * @param extraPdfOptions Optional, JSON object with extra Puppeteer's `Page.pdf()` [PDFOptions](https://pptr.dev/api/puppeteer.pdfoptions).
  * @returns the eventual path of the saved PDF.
  */
-export async function printAsPdfWithBrowserPage(pagePrm: Promise<puppeteer.Page>, inputHtmlFilepath: string, inputCssFilepathOpt?: string, extraPdfOptions: any = {}): Promise<string> {
+export async function printAsPdfWithBrowserPage(
+  input: PrintMainInput & {
+  /** puppeteer's already created page to benefit from its cache. */
+  pagePrm: Promise<puppeteer.Page>
+}): Promise<string> {
   const startTimeInMs = performance.now();
 
-  const outputPdfFilepath = changeExtension(inputHtmlFilepath, ".pdf");
-  process.stderr.write(`Printing PDF into: ${outputPdfFilepath} ... \n`);
+  const page = await input.pagePrm;
 
-  const page = await pagePrm;
+  const isSameUrl = (page.url() === input.goToUrl);
+  const waitUntil = (input.waitUntil || default_waitUntil)(isSameUrl);
 
-  // Get HTML content from HTML file and set the browser page's with it
-  const html = fs.readFileSync(inputHtmlFilepath, "utf-8");
-  await page.setContent(html, {
-    // See options: https://pptr.dev/api/puppeteer.page.setcontent
-    // Ref: https://github.com/puppeteer/puppeteer/issues/422#issuecomment-402690359
-    waitUntil: "networkidle0"
-  });
+  if (isSameUrl) {
+    await page.reload({
+      waitUntil: waitUntil
+    });
+  }
+  else {
+    await page.goto(input.goToUrl, {
+      waitUntil: waitUntil
+    });
+  }
 
-  // "Force" css style (without this, my css didn't get applied)
-  if (inputCssFilepathOpt) {
-    await page.addStyleTag({ path: inputCssFilepathOpt });
+  if (input.cssFilepathOpt) {
+    // "Force" CSS style
+    await page.addStyleTag({ path: input.cssFilepathOpt });
     // Wait for all fonts to be ready
     await page.evaluateHandle("document.fonts.ready");
   }
 
   // Download the PDF; see all options: https://pptr.dev/api/puppeteer.pdfoptions
   await page.pdf({
-    path: outputPdfFilepath,
+    path: input.outputPdfFilepath,
     printBackground: true,
     format: "A4",
     //Prioritize size format if defined in @page CSS rule
     preferCSSPageSize: true,
     //
-    ...extraPdfOptions
+    ...input.extraPdfOptions
   });
 
-  process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${outputPdfFilepath}\n`);
+  process.stderr.write(`Finished printing in ${calcElapsedTimeInMilliseconds(startTimeInMs)}ms; file: ${input.outputPdfFilepath}\n`);
 
-  return outputPdfFilepath;
+  return input.outputPdfFilepath;
 };
 
