@@ -7,8 +7,12 @@
     "pdf",
     "parcel",
     "pdf-generation",
+    "headless-chrome",
     "puppeteer",
-    "pdf-print"
+    "parcel-bundler",
+    "parcel-plugin",
+    "pdf-print",
+    "html-to-pdf"
   ],
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
