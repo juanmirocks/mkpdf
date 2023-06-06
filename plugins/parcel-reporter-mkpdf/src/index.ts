@@ -3,8 +3,8 @@
 
 import { Reporter } from "@parcel/plugin";
 import parcelTypes from "@parcel/types";
-import * as mkpdf from "../workspaces/mkpdf/src/mkpdf";
-import * as util from "../workspaces/mkpdf/src/util";
+import * as mkpdf from "../../../src/mkpdf";
+import * as util from "../../../src/util";
 
 // ----------------------------------------------------------------------------
 

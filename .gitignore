@@ -2,3 +2,5 @@
 .parcel-cache/
 .tsbuildinfo
 dist/
+plugins/*/LICENSE
+plugins/*/NOTICE

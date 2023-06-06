@@ -1,0 +1,54 @@
+{
+  "name": "parcel-reporter-mkpdf",
+  "version": "1.1.1",
+  "description": "📦🖨️ Parcel plugin to export your built HTMLs into PDFs, using Google's Chrome & puppeteer",
+  "keywords": [
+    "plugin",
+    "pdf",
+    "parcel",
+    "pdf-generation",
+    "headless-chrome",
+    "puppeteer",
+    "parcel-bundler",
+    "parcel-plugin",
+    "pdf-print",
+    "html-to-pdf"
+  ],
+  "author": "Dr. Juan Miguel Cejuela",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/juanmirocks/mkpdf/plugins/parcel-reporter-mkpdf/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juanmirocks/mkpdf.git"
+  },
+  "files": [
+    "dist/",
+    "NOTICE"
+  ],
+  "private": false,
+  "type": "commonjs",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "targets": {
+    "main": {
+      "optimize": false
+    }
+  },
+  "scripts": {
+    "clean": "rm  dist/* 2> /dev/null || true",
+    "dev": "parcel watch",
+    "_prod": "parcel build",
+    "prod": "npm run clean; npm run _prod",
+    "test": "echo \"Error: no test specified\" && exit 2"
+  },
+  "engines": {
+    "parcel": "2.x"
+  },
+  "dependencies": {
+    "puppeteer": "18.1.x"
+  },
+  "peerDependencies": {
+    "@parcel/plugin": "^2.8.3",
+    "@parcel/types": "^2.8.3"
+  }
+}

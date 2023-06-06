@@ -1,20 +1,21 @@
 {
-  "name": "parcel-reporter-mkpdf",
-  "version": "1.1.0",
-  "description": "📦🖨️ Parcel plugin to print a PDF out of a successfully built html, using Google's puppeteer",
+  "name": "mkpdf",
+  "version": "1.1.1-wip",
+  "description": "🖨️ CLI & TypeScript API to \"print\" (convert) given URL/HTML/Markdown into a PDF, using Google's Chrome & puppeteer",
   "keywords": [
-    "plugin",
     "pdf",
-    "parcel",
     "pdf-generation",
+    "headless-chrome",
     "puppeteer",
-    "pdf-print"
+    "pdf-print",
+    "html-to-pdf",
+    "url-to-pdf"
   ],
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juanmirocks/parcel-reporter-mkpdf.git"
+    "url": "https://github.com/juanmirocks/mkpdf.git"
   },
   "files": [
     "dist/",
@@ -22,33 +23,21 @@
   ],
   "private": false,
   "type": "commonjs",
-  "source": "src/index.ts",
-  "main": "dist/index.js",
-  "targets": {
-    "main": {
-      "optimize": false
-    }
-  },
+  "source": "src/cli.ts",
+  "main": "dist/cli.js",
   "scripts": {
     "clean": "rm  dist/* 2> /dev/null || true",
-    "dev": "parcel watch",
+    "dist_license_files_to_workspaces": "for dir in plugins/*; do cp LICENSE NOTICE $dir/; done",
     "_prod": "parcel build",
-    "prod": "npm run clean; npm run _prod",
+    "prod": "npm run clean; npm run _prod; npm run dist_license_files_to_workspaces",
     "check": "tsc --noEmit",
     "check-watch": "npm run check -- -watch",
     "lint": "eslint . --fix",
     "test": "jest",
     "test-watch": "jest --watch"
   },
-  "engines": {
-    "parcel": "2.x"
-  },
   "dependencies": {
-    "puppeteer": "18.1.x"
-  },
-  "peerDependencies": {
-    "@parcel/plugin": "^2.8.3",
-    "@parcel/types": "^2.8.3"
+    "puppeteer": ">=18.x <=19.x"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-tsc": "^2.8.3",
@@ -63,6 +52,6 @@
     "typescript": "^4.9.5"
   },
   "workspaces": [
-    "workspaces/*"
+    "plugins/*"
   ]
 }
