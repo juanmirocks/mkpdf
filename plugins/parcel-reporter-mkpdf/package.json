@@ -22,7 +22,8 @@
     "url": "https://github.com/juanmirocks/mkpdf.git"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "NOTICE"
   ],
   "private": false,
   "type": "commonjs",
