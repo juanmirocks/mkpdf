@@ -36,8 +36,9 @@
   "scripts": {
     "clean": "rm  dist/* 2> /dev/null || true",
     "dev": "parcel watch",
+    "dist_parent_license_files": "cp ../../NOTICE ../../LICENSE dist/",
     "_prod": "parcel build",
-    "prod": "npm run clean; npm run _prod",
+    "prod": "npm run clean; npm run _prod; npm run dist_parent_license_files",
     "test": "echo \"Error: no test specified\" && exit 2"
   },
   "engines": {
