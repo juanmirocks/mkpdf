@@ -2,6 +2,15 @@
   "name": "mkpdf",
   "version": "1.2.0-wip",
   "description": "🖨️ CLI & TypeScript API to \"print\" (convert) given URL/HTML/Markdown into a PDF, using Google's Chrome & puppeteer",
+  "keywords": [
+    "pdf",
+    "pdf-generation",
+    "headless-chrome",
+    "puppeteer",
+    "pdf-print",
+    "html-to-pdf",
+    "url-to-pdf"
+  ],
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
   "source": "src/cli.ts",
