@@ -27,8 +27,9 @@
   "main": "dist/cli.js",
   "scripts": {
     "clean": "rm  dist/* 2> /dev/null || true",
+    "dist_license_files_to_workspaces": "for dir in plugins/*; do cp LICENSE NOTICE \"$dir/dist/\"; done",
     "_prod": "parcel build",
-    "prod": "npm run clean; npm run _prod",
+    "prod": "npm run clean; npm run _prod; npm run dist_license_files_to_workspaces",
     "check": "tsc --noEmit",
     "check-watch": "npm run check -- -watch",
     "lint": "eslint . --fix",
