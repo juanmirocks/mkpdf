@@ -1,6 +1,6 @@
 {
   "name": "mkpdf",
-  "version": "1.2.0-wip",
+  "version": "1.1.1-wip",
   "description": "🖨️ CLI & TypeScript API to \"print\" (convert) given URL/HTML/Markdown into a PDF, using Google's Chrome & puppeteer",
   "keywords": [
     "pdf",
