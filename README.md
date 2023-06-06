@@ -4,7 +4,7 @@
 ## Plugins for build tools
 
 * [Parcel.js](plugins/parcel-reporter-mkpdf)
-* [esbuild (NOT IMPLEMENTED)](https://github.com/juanmirocks/mkpdf/issues/2)
+* [esbuild](https://github.com/juanmirocks/mkpdf/issues/2)
 
 
 ## Coding
