@@ -16,13 +16,13 @@
   ],
   "author": "Dr. Juan Miguel Cejuela",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/juanmirocks/mkpdf/plugins/parcel-reporter-mkpdf/README.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juanmirocks/parcel-reporter-mkpdf.git"
+    "url": "https://github.com/juanmirocks/mkpdf.git"
   },
   "files": [
-    "dist/",
-    "NOTICE"
+    "dist/"
   ],
   "private": false,
   "type": "commonjs",
