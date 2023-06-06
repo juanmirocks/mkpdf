@@ -50,11 +50,3 @@ npx parcel serve --reporter parcel-reporter-mkpdf
 ```
 
 That's all! From then on, each time parcel builds an HTML (e.g., `dist/someFilename.html`), the PDF will be generated in the same folder, with same filename but with changed file extension (i.e., `dist/someFilename.pdf`).
-
-
-## Coding
-
-Internally, the PDF is "printed" with [Chromium](https://github.com/chromium/chromium) as a headless browser. The browser is controlled with Google's [puppeteer](https://github.com/puppeteer/puppeteer).
-
-* The key functionality using `puppeteer` is in [mkpdf.ts](./workspaces/mkpdf/src/mkpdf.ts)
-* The parcel plugin wrapper code is in [index.ts](./src/index.ts)
