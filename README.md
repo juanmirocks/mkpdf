@@ -1,4 +1,4 @@
-🖨️🎨 Convert websites programmatically into beautiful PDFs using a modern browser "print" functionality (Chrome).
+🖨️🎨 Convert websites into beautiful PDFs using a modern browser (with Chrome's "print").
 
 
 ## Plugins for build tools
