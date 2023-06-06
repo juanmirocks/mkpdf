@@ -1,3 +1,12 @@
+🖨️🎨 Convert websites programmatically into beautiful PDFs using a modern browser "print" functionality (Chrome).
+
+
+## Plugins for build tools
+
+* [Parcel.js](plugins/parcel-reporter-mkpdf)
+* [esbuild (NOT IMPLEMENTED)](https://github.com/juanmirocks/mkpdf/issues/2)
+
+
 ## Coding
 
 Internally, the PDF is "printed" with Chrome/[Chromium](https://github.com/chromium/chromium) as a headless browser. The browser is controlled with Google's [puppeteer](https://github.com/puppeteer/puppeteer).
